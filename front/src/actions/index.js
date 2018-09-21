@@ -32,7 +32,6 @@ export const deleteItem = id => dispatch => {
     mode: 'cors'
   })
     .then(response => response.json())
-    .then(json => console.log(json))
     .then(() => dispatch(fetchData))
     .then(() => dispatch(receiveDel()))
 }
@@ -48,7 +47,9 @@ export const createItem = newItem => dispatch => {
     body: JSON.stringify(newItem)
   })
     .then(response => response.json())
-    .then(json => console.log(json))
-    .then(() => dispatch(receiveCreate()))
+    .then(json => {
+      console.log(json)
+      dispatch(receiveCreate())
+    })
     .then(() => dispatch(fetchData))
 }
