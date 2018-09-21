@@ -1,28 +1,26 @@
 var express = require('express');
 var router = express.Router();
+var crud = require('../crud');
+
 
 module.exports = function (passport) {
-  router.get('/', function (req, res) {
-    res.render('index', { message: req.flash('message') })
-  });
-  router.get('/home', isAuth, function (req, res) {
-    res.render('home', { user: req.user });
-  });
-  router.post('/login', passport.authenticate('login', {
-    successRedirect: '/home',
-    failureRedirect: '/',
-    failureFlash : true
-  }));
-  router.get('/signout', function (req, res) {
-    req.logout();
-    res.redirect('/');
-  });
-  function isAuth (req, res, next) {
-    if(req.isAuthenticated()) {
-      return next();
-    }
-    res.redirect('/');
-  }
 
+  router.post('/login', function (req, res) {
+    res.send(req.body)
+  });
+
+  router.get('/employers', (req, res) => crud.read(text => res.json(text)))
+
+  router.post('/employer', (req, res) => crud.create(req.body, text => res.json(text)))
+
+  router.put('/employer/:id', (req, res) => {
+    let {id} = req.params
+    crud.update(id, req.body, text => res.json(text))
+  })
+
+  router.delete('/employer/:id', (req, res) => {
+    let {id} = req.params
+    crud.destroy(id, text => res.json(text))
+  })
   return router;
 };

@@ -1,15 +1,14 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 import { Dimmer, Loader, Segment, Container } from 'semantic-ui-react'
 import Employer from './Employer'
 import FormNewEmployer from './FormNewEmployer'
 
-const Main = (props) => {
+const HomePage = (props) => {
   let data = props.data || []
   return (
     <Container id='wrapper'>
-      <Segment>
-        <FormNewEmployer createItem={props.createItem} loading={props.loading}/>
-      </Segment>
+      <Link to="/login">login</Link>
       {
         data.map((item, idx) => {
           return (
@@ -22,6 +21,7 @@ const Main = (props) => {
             />)
         })
       }
+      <FormNewEmployer createItem={props.createItem} loading={props.loading}/>
       <Dimmer active={props.loading} inverted>
         <Loader inverted content='Loading' />
       </Dimmer>
@@ -29,4 +29,4 @@ const Main = (props) => {
   )
 }
 
-export default Main
+export default HomePage

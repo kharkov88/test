@@ -14,6 +14,13 @@ const receiveDel = json => ({
   data: json
 })
 
+const requestLogin = () => ({ type: types.REQUEST_LOGIN })
+
+const receiveLogin = json => ({
+  type: types.RECEIVE_LOGIN,
+  data: json
+})
+
 const requestCreate = () => ({ type: types.REQUEST_CREATE })
 const receiveCreate = () => ({ type: types.RECEIVE_CREATE })
 
@@ -39,11 +46,13 @@ export const deleteItem = id => dispatch => {
 export const createItem = newItem => dispatch => {
   dispatch(requestCreate())
   return fetch('http://localhost:3000/employer', {
-    method: 'POST',
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, cors, *same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, same-origin, *omit
     headers: {
-      'Content-Type': 'application/json'
+      "Content-Type": "application/json; charset=utf-8"
     },
-    mode: 'cors',
     body: JSON.stringify(newItem)
   })
     .then(response => response.json())
@@ -52,4 +61,20 @@ export const createItem = newItem => dispatch => {
       dispatch(receiveCreate())
     })
     .then(() => dispatch(fetchData))
+}
+
+export const fetchLogin = obj => dispatch => {
+  console.log(obj)
+  dispatch(requestDel())
+  return fetch('http://localhost:3000/login', {
+    method: "POST", // *GET, POST, PUT, DELETE, etc.
+    mode: "cors", // no-cors, cors, *same-origin
+    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+    credentials: "same-origin", // include, same-origin, *omit
+    headers: {
+      "Content-Type": "application/json; charset=utf-8"
+    },
+    body: JSON.stringify(obj)
+  })
+    .then(() => dispatch(receiveDel()))
 }
