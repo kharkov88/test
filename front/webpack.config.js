@@ -1,6 +1,7 @@
 const path = require('path')
 
 module.exports = {
+  mode: 'none',
   entry: './src/index.js',
   output: {
     path: path.resolve(__dirname, "public"), // string
@@ -8,6 +9,7 @@ module.exports = {
     library: 'myApp'
   },
   devServer: {
+    historyApiFallback: true,
     contentBase: path.join(__dirname, 'public')
   },
   module: {

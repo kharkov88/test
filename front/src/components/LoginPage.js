@@ -1,14 +1,15 @@
 import React from 'react'
 import {Link} from 'react-router-dom'
-import {Button, Container, Form} from "semantic-ui-react"
+import {Button, Container, Form, Dimmer, Loader} from "semantic-ui-react"
 import {connect} from 'react-redux'
 import {fetchLogin} from '../actions'
+
 
 class LoginPage extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
-      username: null,
+      user: null,
       password: null
     }
     this.handleChangeLogin = this.handleChangeLogin.bind(this)
@@ -18,7 +19,7 @@ class LoginPage extends React.Component {
 
   handleChangeLogin(e) {
     this.setState({
-      username: e.target.value
+      user: e.target.value
     })
   }
 
@@ -31,7 +32,7 @@ class LoginPage extends React.Component {
   handleSubmit() {
     let {dispatch} = this.props
     let newObj = {
-      username: this.state.username,
+      user: this.state.user,
       password: this.state.password
     }
     dispatch(fetchLogin(newObj))
@@ -53,6 +54,9 @@ class LoginPage extends React.Component {
           </Form.Field>
           <Button type='submit'>Submit</Button>
         </Form>
+        <Dimmer active={isFetching} inverted>
+          <Loader inverted content='Loading' />
+        </Dimmer>
       </Container>
     )
   }

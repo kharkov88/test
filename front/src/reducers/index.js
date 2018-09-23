@@ -2,7 +2,8 @@ import {
   REQUEST_DATA,
   RECEIVE_DATA,
   REQUEST_DEL,
-  RECEIVE_DEL, REQUEST_CREATE, RECEIVE_CREATE
+  RECEIVE_DEL, REQUEST_CREATE, RECEIVE_CREATE,
+  REQUEST_LOGIN, RECEIVE_LOGIN
 } from '../constants/ActionTypes'
 
 const initialState = {
@@ -36,6 +37,15 @@ export function reducer (state = initialState, action) {
     case RECEIVE_CREATE:
       return Object.assign({}, state, {
         isFetching: false
+      })
+    case REQUEST_LOGIN:
+      return Object.assign({}, state, {
+        isFetching: true
+      })
+    case RECEIVE_LOGIN:
+      return Object.assign({}, state, {
+        isFetching: false,
+        loginAnswer: action.data
       })
     default: return state
   }

@@ -27,31 +27,39 @@ const receiveCreate = () => ({ type: types.RECEIVE_CREATE })
 
 export const fetchData = dispatch => {
   dispatch(requestData())
-  return fetch('http://localhost:3000/employers')
+  return fetch('http://localhost:3000/employers', {
+    headers: {
+      Authorization: "Bearer " + localStorage.token
+    }
+  })
     .then(response => response.json())
     .then(json => dispatch(receiveData(json)))
 }
 
 export const deleteItem = id => dispatch => {
   dispatch(requestDel())
+  let {token} = localStorage
   return fetch('http://localhost:3000/employer/' + id, {
     method: 'DELETE',
-    mode: 'cors'
+    mode: 'cors',
+    headers: {
+      Authorization: "Bearer " + token
+    }
   })
-    .then(response => response.json())
+    .then(response => response.status===200 && response.json())
     .then(() => dispatch(fetchData))
     .then(() => dispatch(receiveDel()))
+    .catch(err => console.log('bad request'))
 }
 
 export const createItem = newItem => dispatch => {
   dispatch(requestCreate())
   return fetch('http://localhost:3000/employer', {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, cors, *same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, same-origin, *omit
+    method: "POST",
+    mode: "cors", 
     headers: {
-      "Content-Type": "application/json; charset=utf-8"
+      "Content-Type": "application/json; charset=utf-8",
+      Authorization: "Bearer " + localStorage.token
     },
     body: JSON.stringify(newItem)
   })
@@ -64,17 +72,19 @@ export const createItem = newItem => dispatch => {
 }
 
 export const fetchLogin = obj => dispatch => {
-  console.log(obj)
-  dispatch(requestDel())
+  dispatch(requestLogin())
   return fetch('http://localhost:3000/login', {
-    method: "POST", // *GET, POST, PUT, DELETE, etc.
-    mode: "cors", // no-cors, cors, *same-origin
-    cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
-    credentials: "same-origin", // include, same-origin, *omit
+    method: "POST",
+    mode: "cors",
     headers: {
       "Content-Type": "application/json; charset=utf-8"
     },
     body: JSON.stringify(obj)
   })
-    .then(() => dispatch(receiveDel()))
+    .then(response => response.json())
+    //.then(json => console.log(json))
+    .then(json => {
+      localStorage.token = json.token
+      dispatch(receiveLogin(json))
+    })
 }

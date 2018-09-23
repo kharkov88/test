@@ -1,5 +1,5 @@
 import React from 'react'
-import {Button, Modal, Form, Dimmer, Loader } from 'semantic-ui-react'
+import {Button, Modal, Form, Dimmer, Loader} from 'semantic-ui-react'
 
 class FormNewEmployer extends React.Component {
   constructor (props) {
